@@ -1,0 +1,91 @@
+﻿@model ML.Result
+
+@{
+    ViewData["Title"] = "Calcular";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+    
+    @using (Html.BeginForm("SuperDigito", "Calcular", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+    <div class="row">
+        <div class="col">
+            <input id="numero" name="numero" value="@ViewBag.Numero" placeholder="Número" class="form-control"/>
+        </div>
+
+        <div class="col">
+            <input value="@ViewBag.Resultado" placeholder="Resultado" class="form-control" />
+        </div>
+        <div class="visually-hidden">
+            <input value="@ViewBag.IdUsuario" name="idUsuario" placeholder="Resultado" class="form-control" />
+        </div>
+
+        
+    </div>
+    <br />
+    <div class="row">
+        <div class="col col-md-2 col-md-4" style="text-align:center">
+                <button class="btn btn-success">Calcular</button>
+        </div>            
+    </div>
+    
+    }       
+
+    <hr />
+    
+    <div class="row" style="width:70rem">
+        @if (Model.Objects != null && Model.Objects.Count > 0)
+        {
+            <table class="table table-bordered table-responsive" id="tbUsuario">
+                <thead>
+                    <tr>                        
+                        <td class="text-center" style="font-weight:bold;">Eliminar</td>
+
+                        <td class="visually-hidden">IdHistorial</td>
+                        <td class="visually-hidden">IdUsuario</td>
+                        <td class="text-center" style="font-weight:bold;">Numero</td>
+                        <td class="text-center" style="font-weight:bold;">Resultado</td>
+                        <td class="text-center" style="font-weight:bold;">FechaHora</td>                        
+
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @foreach (ML.Historial historial in Model.Objects)
+                    {
+                        <tr style="font-size:medium">                          
+
+                            <td class="text-center">
+                                <a class="btn btn-danger"
+                                   href="@Url.Action("DeleteById","Calcular",
+                                            new { idHistorial = historial.IdHistorial })"><i class="fa-solid fa-trash"></i></a>
+                            </td>
+
+                            <td class="visually-hidden">@historial.IdHistorial</td>
+                            <td class="visually-hidden">@historial.Usuario.IdUsuario</td>
+                            <td class="text-center">@historial.Numero</td>
+                            <td class="text-center">@historial.Resultado</td>
+                            <td class="text-center">@historial.FechaHora</td>
+
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+
+        else
+        {
+            <div class="alert alert-danger" role="alert">No hay registros!</div>
+        }
+
+        <div class="row" style="text-align:end">
+            <div class="col">
+                <a class="btn btn-danger"
+                   href="@Url.Action("DeleteByIdUsuario","Calcular")">Borrar registros</a>
+            </div>            
+        </div>
+    
+    </div>
+</div>
+

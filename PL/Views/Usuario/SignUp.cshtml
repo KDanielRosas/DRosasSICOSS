@@ -1,0 +1,119 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="~/css/Login.css" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="/resources/demos/style.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+
+    <script type="text/javascript">
+
+        function ValidarPassword(idConfirmPass) {
+            var pass = document.getElementById("password").value;
+            var confirmPass = document.getElementById(idConfirmPass).value;
+            if (confirmPass != pass) {
+                $('#lblPassword').text("La contraseña no coincide");
+                $('#lblPassword').css({ "color": "red" });
+                $('#' + idConfirmPass).css({ "borderColor": "red", "background-color": "#f8d7da" });
+                return false;
+            }
+            else {
+                $('#lblPassword').text("La contraseña coincide");
+            $('#lblPassword').css({ "color": "green" });
+                $('#' + idConfirmPass).css({ "border-color": "green", "background-color": "#82E0AA" });
+                return true;
+            }
+        }
+
+        function ValidarUserName(idUserName) {
+            var userName = document.getElementById(idUserName).value;
+            if(userName == "" || userName == null){
+                $('#lblUserName').text("Este campo no puede ir vacío.");
+                $('#lblUserName').css({ "color": "red" });
+                $('#' + idUserName).css({ "borderColor": "red", "background-color": "#f8d7da" });
+            }
+            else{
+                $.ajax({
+                    type: 'POST',
+                    url: '@Url.Action("CheckUserName")',
+                    dataType: 'json',
+                    data: { userName: userName },
+                    success: function (data) {
+                        if (!data.correct) {
+                            $('#lblUserName').text("El usuario ya existe");
+                            $('#lblUserName').css({ "color": "red" });
+                            $('#' + idUserName).css({ "borderColor": "red", "background-color": "#f8d7da" });
+                        }
+                        else {
+                            $('#lblUserName').text("UserName disponible");
+                            $('#lblUserName').css({ "color": "green" });
+                            $('#' + idUserName).css({ "border-color": "green", "background-color": "#82E0AA" });
+                        }
+                    },
+                    error: function (ex) {
+                        alert('Failed.' + ex);
+                    }
+                });
+            }               
+        }
+
+    </script>
+
+</head>
+
+<body>
+    <section style="background-color:cadetblue">
+        <br /> <br />
+        <div class="container" style="height: 40rem; width:80rem">
+            <div class="row d-flex justify-content-center align-items-center">
+                <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+                    <div class="card bg-dark text-white" style="border-radius: 1rem;">
+                        <div class="card-body p-5 text-center">
+
+                            <div class="mb-md-2 mt-md-1 pb-1">
+
+                                <h2 class="fw-bold mb-2 text-uppercase">Registrarse</h2>
+                                <p class="text-white-50 mb-5">Por favor ingrese el nombre de usuario y la contraseña</p>
+
+                                @using (Html.BeginForm("SignUp", "Usuario", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                                {
+                                    <form>
+                                        <div class="form-outline form-white mb-4">
+                                            <input id="userName" name="userName" class="form-control form-control-lg" placeholder="UserName"
+                                                   onkeyup="ValidarUserName('userName')" />
+                                            @Html.Label(null, "", new { @id = "lblUserName" })
+                                        </div>
+
+                                        <div class="form-outline form-white mb-4">
+                                            <input type="password" id="password" name="password" class="form-control form-control-lg" placeholder="Password" />
+
+                                        </div>
+
+                                        <div class="form-outline form-white mb-4">
+                                            <input type="password" id="confirmPass" name="confirmPass" class="form-control form-control-lg" placeholder="Confirmar Password"
+                                                   onkeyup="ValidarPassword('confirmPass')" />
+                                            @Html.Label(null, "", new { @id = "lblPassword" })
+
+                                        </div>
+
+                                        <button class="btn btn-outline-light btn-lg px-5" type="submit">Guardar</button>
+                                    </form>
+                                }
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+</html>
+

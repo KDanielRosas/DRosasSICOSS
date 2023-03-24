@@ -1,0 +1,63 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="~/css/Login.css" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+</head>
+
+<body>
+    <section style="background-color:cadetblue">
+        <br /> <br />
+        <div class="container" style="height: 40rem; width:80rem">
+            <div class="row d-flex justify-content-center align-items-center">
+                <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+                    <div class="card bg-dark text-white" style="border-radius: 1rem;">
+                        <div class="card-body p-5 text-center">
+
+                            <div class="mb-md-2 mt-md-1 pb-1">
+
+                                <h2 class="fw-bold mb-2 text-uppercase">Iniciar Sesión</h2>
+                                <p class="text-white-50 mb-5">Por favor ingrese el nombre de usuario y la contraseña</p>
+
+                                @using (Html.BeginForm("Login", "Usuario", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                                {
+                                    <form>
+                                        <div class="form-outline form-white mb-4">
+                                            <input id="userName" name="userName"class="form-control form-control-lg" placeholder="UserName" />
+                                            
+                                        </div>
+
+                                        <div class="form-outline form-white mb-4">
+                                            <input type="password" id="password" name="password" class="form-control form-control-lg" placeholder="Password"/>
+                                            
+                                        </div>
+
+                                        <button class="btn btn-outline-light btn-lg px-5" type="submit">Entrar</button>
+
+                                    </form>
+                                }
+
+                            </div>
+
+                            <div>
+                                <p class="mb-0">
+                                    @Html.ActionLink("¿No tienes una cuenta aún? Registrate", "SignUp", "Usuario",
+                                    htmlAttributes: new { @class="text-white-50 fw-bold" })
+                                </p>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+
+</html>
+
